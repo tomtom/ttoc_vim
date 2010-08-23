@@ -1,1 +1,1 @@
-TPluginBefore ttoc_vim/.+?.vim$ @vimtlib
+TPluginBefore ttoc_vim[\/].+?\.vim$ @tlib_vim
