@@ -1,6 +1,3 @@
-*ttoc.txt*  ttoc - A regexp-based ToC of the current buffer
-
-
 This plugin tries to duplicate the functionality of Marc Weber's 
 outline.vim (vimscript #1947) on the basis of its description and of 
 vim's own |:g|. Other than outline.vim, it relies on tlib (vimscript 
