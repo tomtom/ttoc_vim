@@ -21,16 +21,6 @@ set cpo&vim
 "   string ... use as rx
 TLet g:ttoc_markers = 1
 
-" if has('signs')
-"     " If non-empty, mark locations with signs.
-"     TLet g:ttoc_sign = '~'
-"     exec 'sign define TToC text='. g:ttoc_sign .' texthl=Special'
-" else
-"     " :nodoc:
-"     TLet g:ttoc_sign = ''
-" endif
-
-
 " By default, assume that everything at the first column is important.
 TLet g:ttoc_rx = '^\w.*'
 
@@ -285,18 +275,14 @@ function! ttoc#View(rx, ...) "{{{3
         let w.ttoc_rx = rx
         let [ac, ii] = ttoc#Collect(w, 1, additional_lines)
         " TLogVAR ac
-        " if !empty(g:ttoc_sign)
-            let acc = []
-            let bn  = bufnr('%')
-            let i = 1
-            for item in ac
-                call add(acc, {'bufnr': bn, 'lnum': matchstr(item, '^0*\zs\d\+'), 'text': i .': '. rx})
-                let i += 1
-            endfor
-            call setloclist(winnr(), acc)
-            " call tlib#signs#ClearBuffer('TToC', bn)
-            " call tlib#signs#Mark('TToC', acc)
-        " endif
+        let acc = []
+        let bn  = bufnr('%')
+        let i = 1
+        for item in ac
+            call add(acc, {'bufnr': bn, 'lnum': matchstr(item, '^0*\zs\d\+'), 'text': i .': '. rx})
+            let i += 1
+        endfor
+        call setloclist(winnr(), acc)
         let w.initial_index = ii
         let w.base = ac
         let win_size = tlib#var#Get('ttoc_win_size', 'wbg')
