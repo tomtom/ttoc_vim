@@ -159,7 +159,7 @@ function! ttoc#Collect(world, return_index, ...) "{{{3
     let s:rx = a:world.ttoc_rx
     let rs  = @/
     let s:next_line = 1
-    let s:multiline = stridx(a:world.ttoc_rx, '\_.') != -1
+    let s:multiline = a:world.ttoc_rx =~ '\\\@<!\\\(_\.\|n\)'
     let s:world = a:world
 
     try
