@@ -3,8 +3,8 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2007-11-11.
-" @Last Change: 2010-04-12.
-" @Revision:    0.0.88
+" @Last Change: 2012-01-13.
+" @Revision:    0.0.93
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -39,6 +39,7 @@ TLet g:ttoc_rx_cpp    = g:ttoc_rx_c
 TLet g:ttoc_rx_html   = '\(<h\d.\{-}</h\d>\|<\(html\|head\|body\|div\|script\|a\s\+name=\).\{-}>\|<.\{-}\<id=.\{-}>\)'
 TLet g:ttoc_rx_java   = '^\s*\(\(package\|import\|private\|public\|protected\|void\|int\|boolean\)\s\+\|\u\).*'
 TLet g:ttoc_rx_javascript = '^\(var\s\+.\{-}\|\s*\w\+\s*:\s*\S.\{-}[,{]\)\s*$'
+TLet g:ttoc_rx_markdown = '\(^.*\ze\n[-=]\+$\|^#\+\s\+.*\)'
 TLet g:ttoc_rx_perl   = '^\([$%@]\|\s*\(use\|sub\)\>\).*'
 TLet g:ttoc_rx_php    = '^\(\w\|\s*\(class\|function\|var\|require\w*\|include\w*\)\>\).*'
 TLet g:ttoc_rx_python = '^\s*\(import\|class\|def\)\>.*'
