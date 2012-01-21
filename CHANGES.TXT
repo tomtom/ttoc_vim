@@ -1,0 +1,7 @@
+version: "0.06"
+  - .gitignore
+  - Removed obsolete code
+  - \n triggers multiline mode (fixes https://github.com/tomtom/tlib_vim/issues/12)
+  - Markdown support
+  MD5 checksum: 87b122db88d0af8092f8b284ec64a9e9
+
