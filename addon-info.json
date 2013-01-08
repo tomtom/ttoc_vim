@@ -1,0 +1,11 @@
+{
+    "name" : "ttoc",
+    "version" : "dev",
+    "author" : "Tom Link <micathom at gmail com>",
+    "maintainer" : "Tom Link <micathom at gmail com>",
+    "repository" : {"type": "git", "url": "git://github.com/tomtom/ttoc_vim.git"},
+    "dependencies" : {
+    "tlib": {"type": "git", "url": "git://github.com/tomtom/tlib_vim.git"}
+  },
+    "description" : "Display a \"table of contents\" for the current buffer"
+}
