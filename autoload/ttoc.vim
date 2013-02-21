@@ -3,8 +3,8 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2007-11-11.
-" @Last Change: 2012-01-13.
-" @Revision:    0.0.93
+" @Last Change: 2013-02-19.
+" @Revision:    0.0.98
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -289,6 +289,7 @@ function! ttoc#View(rx, ...) "{{{3
         let win_size = tlib#var#Get('ttoc_win_size', 'wbg')
         if !empty(win_size)
             " TLogDBG tlib#cmd#UseVertical('TToC')
+            " TLogVAR win_size, g:ttoc_vertical
             let use_vertical = eval(g:ttoc_vertical)
             if use_vertical == 1 || (use_vertical == -1 && tlib#cmd#UseVertical('TToC'))
                 let w.scratch_vertical = 1
