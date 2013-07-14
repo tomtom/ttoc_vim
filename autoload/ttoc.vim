@@ -258,9 +258,10 @@ function! ttoc#View(rx, ...) "{{{3
     TVarArg ['partial_rx', 0], ['v_count', 0], ['p_count', 0], ['background', 0]
     let additional_lines = v_count ? v_count : p_count ? p_count : 0
     " TLogVAR partial_rx, additional_lines, v_count, p_count
+    let ft = &filetype
 
     if empty(a:rx)
-        let rx = s:DefaultRx()
+        let rx = s:DefaultRx(ft)
     else
         let rx = a:rx
         if partial_rx
@@ -274,6 +275,21 @@ function! ttoc#View(rx, ...) "{{{3
     else
         " TLogVAR ac
         let w = copy(g:ttoc_world)
+        if exists('g:ttoc_world_'. ft)
+            for [key, val] in items(g:ttoc_world_{ft})
+                if has_key(w, key)
+                    if type(val) == 3
+                        let w[key] += val
+                    elseif type(val) == 4
+                        let w[key] = extend(w[key], val)
+                    else
+                        let w[key] = copy(val)
+                    endif
+                else
+                    let w[key] = copy(val)
+                endif
+            endfor
+        endif
         let w.ttoc_rx = rx
         let [ac, ii] = ttoc#Collect(w, 1, additional_lines)
         " TLogVAR ac
@@ -318,8 +334,8 @@ function! ttoc#View(rx, ...) "{{{3
 endf
 
 
-function! s:DefaultRx() "{{{3
-    let rx = tlib#var#Get('ttoc_rx_'. &filetype, 'wbg')
+function! s:DefaultRx(filetype) "{{{3
+    let rx = tlib#var#Get('ttoc_rx_'. a:filetype, 'wbg')
     if empty(rx)
         let rx = tlib#var#Get('ttoc_rx', 'wbg')
     endif
