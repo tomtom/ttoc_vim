@@ -3,8 +3,8 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2007-11-11.
-" @Last Change: 2013-02-19.
-" @Revision:    0.0.98
+" @Last Change: 2013-02-22.
+" @Revision:    0.0.105
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -36,6 +36,7 @@ TLet g:ttoc_rx = '^\w.*'
 TLet g:ttoc_rx_bib    = '^@\w\+\s*{\s*\zs\S\{-}\ze\s*,'
 TLet g:ttoc_rx_c      = '^[[:alnum:]#].*'
 TLet g:ttoc_rx_cpp    = g:ttoc_rx_c
+TLet g:ttoc_rx_help   = '^\(.\{-}\~\|\s*\*.\{-}\*\s*\)$'
 TLet g:ttoc_rx_html   = '\(<h\d.\{-}</h\d>\|<\(html\|head\|body\|div\|script\|a\s\+name=\).\{-}>\|<.\{-}\<id=.\{-}>\)'
 TLet g:ttoc_rx_java   = '^\s*\(\(package\|import\|private\|public\|protected\|void\|int\|boolean\)\s\+\|\u\).*'
 TLet g:ttoc_rx_javascript = '^\(var\s\+.\{-}\|\s*\w\+\s*:\s*\S.\{-}[,{]\)\s*$'
