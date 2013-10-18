@@ -4,7 +4,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2007-11-11.
 " @Last Change: 2013-02-22.
-" @Revision:    0.0.105
+" @Revision:    0.0.131
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -66,7 +66,7 @@ TLet g:ttoc_world = {
                 \ 'type': 'm',
                 \ 'query': 'Select entry',
                 \ 'pick_last_item': 0,
-                \ 'scratch': '__ttoc__',
+                \ 'scratch': '__ttoc:%s__',
                 \ 'retrieve_eval': 'ttoc#Collect(world, 0)',
                 \ 'return_agent': 'ttoc#GotoLine',
                 \ 'key_handlers': [
@@ -90,6 +90,9 @@ TLet g:ttoc_vertical = '&lines < &co'
 TLet g:ttoc_win_size = 'min([60, ((&lines > &co) ? &lines : &co) / 2])'
 " TLet g:ttoc_win_size = '((&lines > &co) ? winheight(0) : winwidth(0)) / 2'
 
+" Events in the source buffer that result in a |:bwipeout| of the 
+" respective ttoc buffer.
+TLet g:ttoc#scratch#wipeout = 'BufDelete,BufWipeout,BufHidden'
 
 " function! TToC_GetLine_vim(lnum, acc) "{{{3
 "     let l = a:lnum
@@ -275,6 +278,11 @@ function! ttoc#View(rx, ...) "{{{3
     else
         " TLogVAR ac
         let w = copy(g:ttoc_world)
+        if w.scratch =~ '%s'
+            " let w.scratch = printf(w.scratch, pathshorten(expand('%:p')))
+            let w.scratch = printf(w.scratch, expand('%:p'))
+            exec 'autocmd TToC' g:ttoc#scratch#wipeout '<buffer> call s:DeleteBuffer(bufnr(expand("<abuf>")),'. string(w.scratch) .')'
+        endif
         if exists('g:ttoc_world_'. ft)
             for [key, val] in items(g:ttoc_world_{ft})
                 if has_key(w, key)
@@ -331,6 +339,12 @@ function! ttoc#View(rx, ...) "{{{3
         " call tlib#input#ListW(world)
         call tlib#input#ListD(w)
     endif
+endf
+
+
+function! s:DeleteBuffer(bufnr, scratch) "{{{3
+    silent! exec 'bwipeout' bufnr(a:scratch)
+    silent! exec 'autocmd! TToC' g:ttoc#scratch#wipeout '<buffer='. a:bufnr .'>'
 endf
 
 
