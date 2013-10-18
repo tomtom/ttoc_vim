@@ -5,3 +5,10 @@ version: "0.06"
   - Markdown support
   MD5 checksum: 87b122db88d0af8092f8b284ec64a9e9
 
+  - addon-info
+  - g:ttoc_rx_help
+  - Allow for g:ttoc_world_{&filetype}
+  - When deleting the source buffer, delete the respective ttoc buffer
+  MD5 checksum: bb3b38c08da5d2a5a852d4da75508e3f
+version: "0.07"
+
