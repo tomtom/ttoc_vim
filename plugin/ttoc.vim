@@ -4,18 +4,18 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2007-07-09.
 " @Last Change: 2012-01-21.
-" @Revision:    468
+" @Revision:    470
 " GetLatestVimScripts: 2014 0 ttoc.vim
 " TODO: The cursor isn't set to the old location after using "preview".
 
 if &cp || exists("loaded_ttoc")
     finish
 endif
-if !exists('loaded_tlib') || loaded_tlib < 32
-    echoerr 'tlib >= 0.32 is required'
+if !exists('loaded_tlib') || loaded_tlib < 106
+    echoerr 'tlib >= 1.06 is required'
     finish
 endif
-let loaded_ttoc = 6
+let loaded_ttoc = 7
 
 let s:save_cpo = &cpo
 set cpo&vim
