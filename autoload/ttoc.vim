@@ -1,15 +1,10 @@
-" ttoc.vim
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
-" @Created:     2007-11-11.
 " @Last Change: 2013-02-22.
-" @Revision:    0.0.131
+" @Revision:    134
 
-let s:save_cpo = &cpo
-set cpo&vim
 " call tlog#Log('Load: '. expand('<sfile>')) " vimtlib-sfile
-
 
 
 " Markers as used by vim and other editors. Can be also buffer-local. 
@@ -92,7 +87,7 @@ TLet g:ttoc_win_size = 'min([60, ((&lines > &co) ? &lines : &co) / 2])'
 
 " Events in the source buffer that result in a |:bwipeout| of the 
 " respective ttoc buffer.
-TLet g:ttoc#scratch#wipeout = 'BufDelete,BufWipeout,BufHidden'
+TLet g:ttoc#scratch#wipeout = 'BufDelete,BufWipeout' . (&hidden ? '' : ',BufHidden')
 
 " function! TToC_GetLine_vim(lnum, acc) "{{{3
 "     let l = a:lnum
@@ -403,6 +398,3 @@ function! ttoc#FollowCursor(world, selected) "{{{3
     return a:world
 endf
 
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
