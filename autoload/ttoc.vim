@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
-" @Last Change: 2013-02-22.
-" @Revision:    134
+" @Last Change: 2013-11-11.
+" @Revision:    139
 
 " call tlog#Log('Load: '. expand('<sfile>')) " vimtlib-sfile
 
@@ -80,6 +80,7 @@ TLet g:ttoc_world = {
 " If true, split vertical.
 TLet g:ttoc_vertical = '&lines < &co'
 " TLet g:ttoc_vertical = -1
+" TLet g:ttoc_vertical = 0
 
 " Vim code that evaluates to the desired window width/heigth.
 TLet g:ttoc_win_size = 'min([60, ((&lines > &co) ? &lines : &co) / 2])'
@@ -275,7 +276,7 @@ function! ttoc#View(rx, ...) "{{{3
         let w = copy(g:ttoc_world)
         if w.scratch =~ '%s'
             " let w.scratch = printf(w.scratch, pathshorten(expand('%:p')))
-            let w.scratch = printf(w.scratch, expand('%:p'))
+            let w.scratch = substitute(printf(w.scratch, expand('%:p')), '\W', '_', 'g')
             exec 'autocmd TToC' g:ttoc#scratch#wipeout '<buffer> call s:DeleteBuffer(bufnr(expand("<abuf>")),'. string(w.scratch) .')'
         endif
         if exists('g:ttoc_world_'. ft)
