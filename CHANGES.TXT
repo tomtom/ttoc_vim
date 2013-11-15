@@ -12,3 +12,9 @@ version: "0.06"
   MD5 checksum: bb3b38c08da5d2a5a852d4da75508e3f
 version: "0.07"
 
+version: "0.08"
+  - Help template
+  - g:ttoc#scratch#wipeout defaults to: 'BufDelete,BufWipeout' . (&hidden ? '' : ',BufHidden')
+  - ttoc#View(): Use a clean filename
+  MD5 checksum: fcdca87eb2d549e516705e781cfaa069
+
