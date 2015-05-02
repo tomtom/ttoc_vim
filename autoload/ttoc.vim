@@ -164,7 +164,19 @@ function! ttoc#Collect(world, return_index, ...) "{{{3
     let s:world = a:world
 
     try
-        exec 'keepjumps g /'. escape(a:world.ttoc_rx, '/') .'/call s:ProcessLine()'
+        if !empty(a:world.ttoc_expr)
+            let expr_result = eval(a:world.ttoc_expr)
+            if type(expr_result) == type('')
+                let line_numbers = split(expr_result, "\n")
+            else
+                let line_numbers = expr_result
+            endif
+            for l in line_numbers
+                exec 'keepjumps '. substitute(l, '\r', '', 'g') .' call s:ProcessLine()'
+            endfor
+        else
+            exec 'keepjumps g /'. escape(a:world.ttoc_rx, '/') .'/call s:ProcessLine()'
+        end
     finally
         let @/ = rs
     endtry
@@ -260,8 +272,14 @@ function! ttoc#View(rx, ...) "{{{3
     let ft = &filetype
 
     if empty(a:rx)
-        let rx = s:DefaultRx(ft)
+        let expr = s:DefaultExpr(ft)
+        if empty(expr)
+            let rx = s:DefaultRx(ft)
+        else
+            let rx = '\s*.*'
+        endif
     else
+        let expr = ''
         let rx = a:rx
         if partial_rx
             let rx = '^.\{-}'. rx .'.*$'
@@ -295,6 +313,7 @@ function! ttoc#View(rx, ...) "{{{3
             endfor
         endif
         let w.ttoc_rx = rx
+        let w.ttoc_expr = expr
         let [ac, ii] = ttoc#Collect(w, 1, additional_lines)
         " TLogVAR ac
         let acc = []
@@ -363,6 +382,10 @@ function! s:DefaultRx(filetype) "{{{3
         endif
     endif
     return rx
+endf
+
+function! s:DefaultExpr(filetype) "{{{3
+    return tlib#var#Get('ttoc_expr_'. a:filetype, 'wbg')
 endf
 
 
