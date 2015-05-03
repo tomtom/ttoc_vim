@@ -10,6 +10,13 @@ variables or in global filetype-specific (g:ttoc_rx_{&filetype})
 variables. The order actually is: [wbg]:ttoc_rx_{&filetype} > 
 [wbg]:ttoc_rx.
 
+The TToC command can also evaluate an expression to get the line 
+numbers. The expression is evalutated if TToC is invoked without a regex 
+argument and the expression is defined for that filetype 
+([wbg]:ttoc_expr_{&filetype}). The expression needs to return either a 
+sorted and unique list of line numbers either as a vim list or as a 
+newline-separated string.
+
 In the list view, you can select a line and either preview it (<c-p>), 
 jump there (<), close the list and jump there (<cr>).
 

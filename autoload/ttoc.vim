@@ -1,7 +1,7 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
-" @Last Change: 2013-11-11.
+" @Last Change: 2015-05-03.
 " @Revision:    139
 
 " call tlog#Log('Load: '. expand('<sfile>')) " vimtlib-sfile
@@ -164,7 +164,25 @@ function! ttoc#Collect(world, return_index, ...) "{{{3
     let s:world = a:world
 
     try
-        exec 'keepjumps g /'. escape(a:world.ttoc_rx, '/') .'/call s:ProcessLine()'
+        if !empty(a:world.ttoc_expr)
+            let expr_result = eval(a:world.ttoc_expr)
+            if type(expr_result) == type('')
+                let line_numbers = split(expr_result, "\n")
+            else
+                let line_numbers = expr_result
+            endif
+            if s:multiline
+                for l in line_numbers
+                    exec 'keepjumps' l 'call s:ProcessLine(line("."))'
+                endfor
+            else
+                for l in line_numbers
+                    call s:ProcessLine(l)
+                endfor
+            endif
+        else
+            exec 'keepjumps g /'. escape(a:world.ttoc_rx, '/') .'/call s:ProcessLine(line("."))'
+        end
     finally
         let @/ = rs
     endtry
@@ -180,10 +198,9 @@ function! ttoc#Collect(world, return_index, ...) "{{{3
 endf
 
 
-function! s:ProcessLine() "{{{3
-    let l = line('.')
-    " TLogVAR l
-    if l >= s:next_line
+function! s:ProcessLine(lnum) "{{{3
+    " TLogVAR a:lnum
+    if a:lnum >= s:next_line
 
         let linesplus = 1
         " call TLogDBG("s:multiline=". s:multiline)
@@ -194,20 +211,20 @@ function! s:ProcessLine() "{{{3
             " TLogVAR endline
             if endline == 0
                 " shouldn't be here
-                let t = matchstr(getline(l)
+                let t = matchstr(getline(a:lnum)
             else
-                let t = [join(getline(l, endline), "\n")]
-                let linesplus += (endline - l)
+                let t = [join(getline(a:lnum, endline), "\n")]
+                let linesplus += (endline - a:lnum)
             endif
             call setpos('.', pos)
             " call winrestview(view)
         else
-            let t = [matchstr(getline(l), s:rx)]
+            let t = [matchstr(getline(a:lnum), s:rx)]
         endif
         " TLogVAR t
-        let s:next_line = l + linesplus
+        let s:next_line = a:lnum + linesplus
         if exists('*TToC_GetLine_'.&filetype)
-            let next_line = TToC_GetLine_{&filetype}(l, t)
+            let next_line = TToC_GetLine_{&filetype}(a:lnum, t)
             if next_line > s:next_line
                 let s:next_line = next_line
             endif
@@ -225,12 +242,12 @@ function! s:ProcessLine() "{{{3
             let s:next_line = next_line
         endif
 
-        let i = printf(s:line_format, l) .': '. substitute(join(t, ' | '), repeat('\s', &sw), ' ', 'g')
+        let i = printf(s:line_format, a:lnum) .': '. substitute(join(t, ' | '), repeat('\s', &sw), ' ', 'g')
         " TLogVAR i
         " let i = substitute(join(t, ' | '), '\s\+', ' ', 'g')
         call add(s:accum, i)
-        " call add(s:table, l)
-        if l <= s:current_line
+        " call add(s:table, a:lnum)
+        if a:lnum <= s:current_line
             let s:current_index += 1
         endif
 
@@ -260,8 +277,14 @@ function! ttoc#View(rx, ...) "{{{3
     let ft = &filetype
 
     if empty(a:rx)
-        let rx = s:DefaultRx(ft)
+        let expr = s:DefaultExpr(ft)
+        if empty(expr)
+            let rx = s:DefaultRx(ft)
+        else
+            let rx = '\s*.*'
+        endif
     else
+        let expr = ''
         let rx = a:rx
         if partial_rx
             let rx = '^.\{-}'. rx .'.*$'
@@ -295,6 +318,7 @@ function! ttoc#View(rx, ...) "{{{3
             endfor
         endif
         let w.ttoc_rx = rx
+        let w.ttoc_expr = expr
         let [ac, ii] = ttoc#Collect(w, 1, additional_lines)
         " TLogVAR ac
         let acc = []
@@ -363,6 +387,10 @@ function! s:DefaultRx(filetype) "{{{3
         endif
     endif
     return rx
+endf
+
+function! s:DefaultExpr(filetype) "{{{3
+    return tlib#var#Get('ttoc_expr_'. a:filetype, 'wbg')
 endf
 
 
