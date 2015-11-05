@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
-" @Last Change: 2015-05-03.
-" @Revision:    139
+" @Last Change: 2015-11-05.
+" @Revision:    142
 
 " call tlog#Log('Load: '. expand('<sfile>')) " vimtlib-sfile
 
@@ -43,6 +43,7 @@ TLet g:ttoc_rx_rd     = '^\(=\+\|:\w\+:\).*'
 TLet g:ttoc_rx_ruby   = '\C^\(if\>\|\s*\(class\|module\|def\|require\|private\|public\|protected\|module_functon\|alias\|attr\(_reader\|_writer\|_accessor\)\?\)\>\|\s*[[:upper:]_]\+\s*=\).*'
 TLet g:ttoc_rx_scheme = '^\s*(define.*'
 TLet g:ttoc_rx_sh     = '^\s*\(\(export\|function\|while\|case\|if\)\>\|\w\+\s*()\s*{\).*'
+TLet g:ttoc_rx_sql    = '^\c\(select\|create\|if\)\>.*'
 TLet g:ttoc_rx_tcl    = '^\s*\(source\|proc\)\>.*'
 TLet g:ttoc_rx_tex    = '\C\\\(label\|\(sub\)*\(section\|paragraph\|part\)\)\>.*'
 TLet g:ttoc_rx_viki   = '^\(\*\+\|\s*#\l\).*'
